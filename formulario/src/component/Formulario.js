@@ -5,27 +5,22 @@ import { database, storage,auth } from '../firebaseconf';
 const Formulario=()=>{
     const paperStyle={padding: '30px 20px',width:700,margin:"20px auto",height:700}
     const padd={paddingLeft:'10px'}
-    const [Imagen,setImagen]=useState();
+    const [Imagen,setImagen]=useState('');
     const [ref, setRef] = useState(null);
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
-    const [identidad, setIdentidad] = useState(0);
+    const [identidad, setIdentidad] = useState('');
     const [nacimiento, setNacimiento] = useState('');
     const [email, setEmail] = useState('');
     const password="123456789";
     const [urlImagen,setUrlImagen]=useState('');
 
-
     const crearUsuario = async (e) => {
         e.preventDefault(); 
-        if (email.trim() == "" || nombre.trim() == "" || apellido.trim() == ""  || nacimiento.trim()=='') {
-
+        if (email.trim() == "" || nombre.trim() == "" || apellido.trim() == ""  || nacimiento.trim()=='' || !Imagen || identidad.trim()=='') {
           alert("No puede dejar campos vacios");
          }else{
-           if(nombre.length<=2 || apellido.length<=2){alert("el nombre y/o apellido deben tener una longitud minima de 3 caracteres")}else{
-               if(identidad.length>13 || identidad<13){
-                   alert("el numero de identidad tiene 13 cifras")
-               }else{
+           if(nombre.length<=2 || apellido.length<=2 || !(identidad.length==13)){alert("el nombre y/o apellido deben tener una longitud minima de 3 caracteres y identidad debe tener 13 digitos")}else{
           await auth.createUserWithEmailAndPassword(email,password)
           .then(f=>{
             subirImagen();
@@ -44,7 +39,7 @@ const Formulario=()=>{
               }
             }
           })
-         }}}
+         }}
     };
 
     const subirImagen = async () => {
